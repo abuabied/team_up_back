@@ -18,33 +18,38 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test() throws Exception {
+        return new ResponseEntity<>("hi", HttpStatus.OK);
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<HttpStatus> loginUser(@RequestBody User user) throws Exception{
-        if(user == null){
+    public ResponseEntity<HttpStatus> loginUser(@RequestBody User user) throws Exception {
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return userService.authUser(user);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<HttpStatus> registerUser(@RequestBody User user) throws Exception{
-        if(user == null){
+    public ResponseEntity<HttpStatus> registerUser(@RequestBody User user) throws Exception {
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return userService.registerUser(user);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) throws Exception{
-        if(user == null){
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) throws Exception {
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return userService.updateUser(user);
     }
 
     @PostMapping("/get-user")
-    public ResponseEntity<Optional<User>> getUser(@RequestBody User user) throws Exception{
-        if(user == null){
+    public ResponseEntity<Optional<User>> getUser(@RequestBody User user) throws Exception {
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return userService.getUser(user);
