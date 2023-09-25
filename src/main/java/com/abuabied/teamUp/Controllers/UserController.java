@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping("/test")
     public ResponseEntity<String> test() {
-        return new ResponseEntity<>("hi", HttpStatus.OK);
+        return new ResponseEntity<>("hi\n", HttpStatus.OK);
     }
 
     @PostMapping("/login")
