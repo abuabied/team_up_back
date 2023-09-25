@@ -34,7 +34,7 @@ public class UserController {
         return userService.registerUser(user);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) throws Exception{
         if(user == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
