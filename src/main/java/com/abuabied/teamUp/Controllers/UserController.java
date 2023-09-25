@@ -17,11 +17,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return new ResponseEntity<>("hi", HttpStatus.OK);
-    }
-
     @PostMapping("/login")
     public ResponseEntity<HttpStatus> loginUser(@RequestBody User user) {
         if (user == null) {
