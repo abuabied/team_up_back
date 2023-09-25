@@ -28,6 +28,6 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Terminate existing process
-      run: sudo kill -15 $(sudo lsof -t -i:8080)
-    - name: Execute Jar File 
+    - name: Execute Jar File
+      run: sudo kill -9 `sudo lsof -t -i:8080`
       run: sudo java -jar /home/ubuntu/actions-runner/_work/team_up_back/team_up_back/target/teamUp-0.0.1-SNAPSHOT.jar &
