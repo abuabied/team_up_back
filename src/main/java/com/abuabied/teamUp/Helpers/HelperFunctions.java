@@ -17,38 +17,38 @@ public abstract class HelperFunctions {
                 .toString();
     }
 
-    public static ResponseCookie createCookieForUser(String username) {
-        // Cookie cookie = new Cookie("username", username);
-        // cookie.setDomain("localhost");
-        // cookie.setHttpOnly(true);
-        // cookie.setSecure(true);
-        // cookie.setMaxAge(28800);
+    // public static ResponseCookie createCookieForUser(String username) {
+    //     // Cookie cookie = new Cookie("username", username);
+    //     // cookie.setDomain("localhost");
+    //     // cookie.setHttpOnly(true);
+    //     // cookie.setSecure(true);
+    //     // cookie.setMaxAge(28800);
 
-        ResponseCookie springCookie = ResponseCookie.from("username", username)
-                .sameSite("None")
-                .secure(true)
-                .path("/").domain("team-up-141.web.app")
-                .maxAge(28800)
-                .build();
+    //     ResponseCookie springCookie = ResponseCookie.from("username", username)
+    //             .sameSite("None")
+    //             .secure(true)
+    //             .path("/").domain("team-up-141.web.app")
+    //             .maxAge(28800)
+    //             .build();
 
-        return springCookie;
-    }
+    //     return springCookie;
+    // }
 
-    public static ResponseCookie createTestCookie() {
-        // Cookie cookie = new Cookie("username", username);
-        // cookie.setDomain("localhost");
-        // cookie.setHttpOnly(true);
-        // cookie.setSecure(true);
-        // cookie.setMaxAge(28800);
+    // public static ResponseCookie createTestCookie() {
+    //     // Cookie cookie = new Cookie("username", username);
+    //     // cookie.setDomain("localhost");
+    //     // cookie.setHttpOnly(true);
+    //     // cookie.setSecure(true);
+    //     // cookie.setMaxAge(28800);
 
-        ResponseCookie springCookie = ResponseCookie.from("test", "success")
-                // .httpOnly(true)
-                .sameSite("None")
-                .secure(true)
-        //        .path("/").domain("team-up-141.web.app")
-                .maxAge(28800)
-                .build();
+    //     ResponseCookie springCookie = ResponseCookie.from("test", "success")
+    //             // .httpOnly(true)
+    //             .sameSite("None")
+    //             .secure(true)
+    //     //        .path("/").domain("team-up-141.web.app")
+    //             .maxAge(28800)
+    //             .build();
 
-        return springCookie;
-    }
+    //     return springCookie;
+    // }
 }

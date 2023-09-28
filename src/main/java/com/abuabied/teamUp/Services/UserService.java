@@ -89,10 +89,10 @@ public class UserService {
     }
 
     private ResponseEntity<HttpStatus> createGoodResponse(String username, HttpStatus status) {
-        ResponseCookie cookie = HelperFunctions.createCookieForUser(username);
+        //ResponseCookie cookie = HelperFunctions.createCookieForUser(username);
         ResponseEntity response = ResponseEntity
                 .status(status)
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                //.header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .build();
         return response;
     }
