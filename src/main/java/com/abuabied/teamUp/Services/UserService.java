@@ -14,11 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-
 @Service("user")
 @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class UserService {
-    //let framework know to initialize the object for us
+    // let framework know to initialize the object for us
     @Autowired
     private UserRepository userRepository;
 
@@ -75,6 +74,19 @@ public class UserService {
         }
     }
 
+    public ResponseEntity<String> test() {
+        try {
+            ResponseCookie cookie = HelperFunctions.createTestCookie();
+            ResponseEntity response = ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .build();
+            return response;
+        } catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     private Optional<User> checkIfUserExists(User user) {
         Optional<User> checkUser = Optional.empty();
         try {
@@ -89,7 +101,7 @@ public class UserService {
         return checkUser;
     }
 
-    private ResponseEntity<HttpStatus> createGoodResponse(String username, HttpStatus status){
+    private ResponseEntity<HttpStatus> createGoodResponse(String username, HttpStatus status) {
         ResponseCookie cookie = HelperFunctions.createCookieForUser(username);
         ResponseEntity response = ResponseEntity
                 .status(status)
