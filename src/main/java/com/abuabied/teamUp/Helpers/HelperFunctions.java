@@ -26,8 +26,8 @@ public abstract class HelperFunctions {
 
         ResponseCookie springCookie = ResponseCookie.from("username", username)
                 .sameSite("None")
-                .secure(true).httpOnly(true)
-                .path("/").domain("https://team-up-141.web.app/")
+                .secure(true)
+                .path("/").domain(".web.app/")
                 .maxAge(28800)
                 .build();
 
@@ -44,7 +44,7 @@ public abstract class HelperFunctions {
         ResponseCookie springCookie = ResponseCookie.from("test", "success")
                 // .httpOnly(true)
                 .sameSite("None")
-                .secure(true).httpOnly(true)
+                .secure(true)
                 .path("/").domain("https://team-up-141.web.app/")
                 .maxAge(28800)
                 .build();
