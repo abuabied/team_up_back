@@ -74,16 +74,6 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<String> test() {
-        try {
-            ResponseCookie cookie = HelperFunctions.createTestCookie();
-            ResponseEntity response = new ResponseEntity("hi", HttpStatus.OK);
-            return response;
-        } catch (Exception err) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     private Optional<User> checkIfUserExists(User user) {
         Optional<User> checkUser = Optional.empty();
         try {

@@ -1,12 +1,9 @@
 package com.abuabied.teamUp.Controllers;
 
 import com.abuabied.teamUp.Entities.User;
-import com.abuabied.teamUp.Helpers.HelperFunctions;
 import com.abuabied.teamUp.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +19,7 @@ public class UserController {
 
     @GetMapping("/test")
     public ResponseEntity<String> test() {
-        return userService.test();
+        return new ResponseEntity<>("hi\n", HttpStatus.OK);
     }
 
     @PostMapping("/login")
