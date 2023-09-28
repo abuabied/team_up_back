@@ -27,7 +27,7 @@ public abstract class HelperFunctions {
         ResponseCookie springCookie = ResponseCookie.from("username", username)
                 .sameSite("None")
                 .secure(true)
-                .path("/").domain(".web.app/")
+                //.path("/").domain(".web.app/")
                 .maxAge(28800)
                 .build();
 
