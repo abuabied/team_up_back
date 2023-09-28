@@ -26,8 +26,9 @@ public abstract class HelperFunctions {
 //        cookie.setMaxAge(28800);
 
         ResponseCookie springCookie = ResponseCookie.from("username", username)
-//                .httpOnly(true)
-//               .secure(true)
+                //               .httpOnly(true)
+                .sameSite("None")
+                .secure(true)
                 .path("/").domain("")
                 .maxAge(28800)
                 .build();
