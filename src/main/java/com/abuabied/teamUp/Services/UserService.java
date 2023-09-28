@@ -79,8 +79,7 @@ public class UserService {
             ResponseCookie cookie = HelperFunctions.createTestCookie();
             ResponseEntity response = ResponseEntity
                     .status(HttpStatus.OK)
-                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .build();
+                    .header(HttpHeaders.SET_COOKIE, cookie.toString()).body("hi");
             return response;
         } catch (Exception err) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
