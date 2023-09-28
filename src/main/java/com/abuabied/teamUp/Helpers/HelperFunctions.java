@@ -45,7 +45,7 @@ public abstract class HelperFunctions {
                 // .httpOnly(true)
                 .sameSite("None")
                 .secure(true)
-                .path("/").domain("team-up-141.web.app")
+        //        .path("/").domain("team-up-141.web.app")
                 .maxAge(28800)
                 .build();
 
