@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@CrossOrigin(origins = {"https://team-up-141.web.app/", "https://team-up-141.firebaseapp.com/"}, exposedHeaders = "*", allowCredentials = "true", maxAge = 3600)
+@CrossOrigin(origins = { "https://team-up-141.web.app/", "https://team-up-141.firebaseapp.com/"}, exposedHeaders = "*", allowCredentials = "true", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
