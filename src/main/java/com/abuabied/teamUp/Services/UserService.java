@@ -50,8 +50,9 @@ public class UserService {
 
     public ResponseEntity<HttpStatus> updateUser(User user) {
         try {
-            if (userRepository.save(user) != null) {
-                return createGoodResponse(user.getUsername(), HttpStatus.OK);
+            User updated = userRepository.save(user);
+            if (updated != null) {
+                return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception err) {
