@@ -1,8 +1,11 @@
 package com.abuabied.teamUp.Helpers;
 
+import com.abuabied.teamUp.Entities.Game;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class HelperFunctions {
     public static int comparePasswords(String unhashedPassword, String hashedPassword) {
@@ -16,38 +19,15 @@ public abstract class HelperFunctions {
                 .toString();
     }
 
-    // public static ResponseCookie createCookieForUser(String username) {
-    //     // Cookie cookie = new Cookie("username", username);
-    //     // cookie.setDomain("localhost");
-    //     // cookie.setHttpOnly(true);
-    //     // cookie.setSecure(true);
-    //     // cookie.setMaxAge(28800);
-
-    //     ResponseCookie springCookie = ResponseCookie.from("username", username)
-    //             .sameSite("None")
-    //             .secure(true)
-    //             .path("/").domain("team-up-141.web.app")
-    //             .maxAge(28800)
-    //             .build();
-
-    //     return springCookie;
-    // }
-
-    // public static ResponseCookie createTestCookie() {
-    //     // Cookie cookie = new Cookie("username", username);
-    //     // cookie.setDomain("localhost");
-    //     // cookie.setHttpOnly(true);
-    //     // cookie.setSecure(true);
-    //     // cookie.setMaxAge(28800);
-
-    //     ResponseCookie springCookie = ResponseCookie.from("test", "success")
-    //             // .httpOnly(true)
-    //             .sameSite("None")
-    //             .secure(true)
-    //     //        .path("/").domain("team-up-141.web.app")
-    //             .maxAge(28800)
-    //             .build();
-
-    //     return springCookie;
-    // }
+    public static String getGameCollectionItemsAsIDString(Map<String, Game> gameCollection) {
+        String gameIDsString = "";
+        Set<String> gameIDSet = gameCollection.keySet();
+        for (String gameID : gameIDSet) {
+            gameIDsString += gameID + ", ";
+        }
+        if (gameIDsString.length() > 0) {
+            gameIDsString = gameIDsString.substring(0, gameIDsString.length() - 2);
+        }
+        return gameIDsString;
+    }
 }
