@@ -17,7 +17,7 @@ public class TeamUpApplication {
 
 	@GetMapping("/.well-known/pki-validation/1069245F457443EC4D519282B5B02C3C.txt")
 	public ResponseEntity<String> cert() {
-		return new ResponseEntity<String>("7A7C7AACCAFA4DF0A4AF033F8FCD4D9A2130558ABBC914B12A51FB7DED07C2AF\ncomodoca.com\n3eb98d7888a3e93\n"
+		return new ResponseEntity<String>("84ADED9F0B2D2F22EA3428011F3D270D5139FE039FD5717EE1524D5DDC4380F4\ncomodoca.com\n5910d1c7e91b155"
 				, HttpStatus.OK);
 	}
 }
