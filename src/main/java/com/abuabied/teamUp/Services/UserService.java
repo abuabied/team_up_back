@@ -1,5 +1,6 @@
 package com.abuabied.teamUp.Services;
 
+import com.abuabied.teamUp.Entities.Game;
 import com.abuabied.teamUp.Entities.User;
 import com.abuabied.teamUp.Helpers.HelperFunctions;
 import com.abuabied.teamUp.Repositories.UserRepository;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service("user")
@@ -20,56 +23,126 @@ public class UserService {
     private UserRepository userRepository;
 
     public ResponseEntity<HttpStatus> authUser(User user) {
-        Optional<User> checkUser = checkIfUserExists(user);
-        if (!checkUser.isEmpty()) {
-            try {
+        try {
+            Optional<User> checkUser = checkIfUserExists(user);
+            if (!checkUser.isEmpty()) {
                 if (HelperFunctions.comparePasswords(user.getPassword(), checkUser.get().getPassword()) == 0) {
-                    return createGoodResponse(user.getUsername(), HttpStatus.OK);
+                    String gameIDsString = HelperFunctions
+                            .getGameCollectionItemsAsIDString(checkUser.get().getGameCollection());
+                    return createGoodResponse(gameIDsString, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(HttpStatus.FORBIDDEN);
                 }
-            } catch (Exception err) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
+        } catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<HttpStatus> registerUser(User user) {
-        if (checkIfUserExists(user).isEmpty()) {
-            String hashedPassword = HelperFunctions.hashPassword(user.getPassword());
-            user.setPassword(hashedPassword);
-            User newUser = userRepository.save(user);
-            if (newUser != null) {
-                return createGoodResponse(user.getUsername(), HttpStatus.CREATED);
+        try {
+            if (checkIfUserExists(user).isEmpty()) {
+                String hashedPassword = HelperFunctions.hashPassword(user.getPassword());
+                user.setPassword(hashedPassword);
+                user.setGameCollection(new HashMap<>());
+                User newUser = userRepository.save(user);
+                if (newUser != null) {
+                    return createGoodResponse(user.getUsername(), HttpStatus.CREATED);
+                }
+                return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
             }
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        } catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
+
     }
 
     public ResponseEntity<HttpStatus> updateUser(User user) {
         try {
-            User updated = userRepository.save(user);
-            if (updated != null) {
+            if (userRepository.save(user) != null) {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         } catch (Exception err) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public ResponseEntity<Optional<User>> getUser(User user) {
+    public ResponseEntity<User> getUser(User user) {
         try {
             Optional<User> checkUser = userRepository.findByUsername(user.getUsername());
             if (!checkUser.isEmpty()) {
                 checkUser.get().setPassword("");
-                return new ResponseEntity<>(checkUser, HttpStatus.OK);
+                return new ResponseEntity<>(checkUser.get(), HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception err) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<String> addGameToCollection(User user, Game game) {
+        try {
+            Optional<User> userToUpdate = userRepository.findByUsername(user.getUsername());
+            if (!userToUpdate.isEmpty()) {
+                if (userToUpdate.get().getGameCollection() == null) {
+                    userToUpdate.get().setGameCollection(new HashMap<>());
+                }
+                if (!userToUpdate.get().getGameCollection().containsKey(game.getGameID())) {
+                    userToUpdate.get().getGameCollection().put(game.getGameID(), game);
+                }
+                if (userRepository.save(userToUpdate.get()) != null) {
+                    String gameIDsString = HelperFunctions
+                            .getGameCollectionItemsAsIDString(userToUpdate.get().getGameCollection());
+                    return new ResponseEntity<>(gameIDsString, HttpStatus.OK);
+                }
+                return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    public ResponseEntity<String> removeGameFromCollection(User user, Game game) {
+        try {
+            Optional<User> userToUpdate = userRepository.findByUsername(user.getUsername());
+            if (!userToUpdate.isEmpty()) {
+                if (userToUpdate.get().getGameCollection() != null) {
+                    userToUpdate.get().getGameCollection().remove(game.getGameID());
+                    if (userRepository.save(userToUpdate.get()) != null) {
+                        String gameIDsString = HelperFunctions
+                                .getGameCollectionItemsAsIDString(userToUpdate.get().getGameCollection());
+                        return new ResponseEntity<>(gameIDsString, HttpStatus.OK);
+                    } else {
+                        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+                    }
+                } else {
+                    return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+        public ResponseEntity<Collection<Game>> getGamesCollection(User user) {
+        try {
+            Optional<User> checkUser = userRepository.findByUsername(user.getUsername());
+            if (!checkUser.isEmpty()) {
+                checkUser.get().setPassword("");
+                return new ResponseEntity<>(checkUser.get().getGameCollection().values(), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -88,7 +161,7 @@ public class UserService {
     }
 
     private ResponseEntity<HttpStatus> createGoodResponse(String username, HttpStatus status) {
-        //ResponseCookie cookie = HelperFunctions.createCookieForUser(username);
+        // ResponseCookie cookie = HelperFunctions.createCookieForUser(username);
         ResponseEntity<HttpStatus> response = new ResponseEntity<>(status);
         return response;
     }

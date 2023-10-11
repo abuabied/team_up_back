@@ -3,6 +3,9 @@ package com.abuabied.teamUp.Entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Map;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -22,11 +25,14 @@ public class User {
 
     private String password;
 
+    private Map<String, Game> gameCollection;
+
     public User(User user) {
         this.username = user.username;
         this.firstName = user.firstName;
         this.lastName = user.lastName;
         this.email = user.email;
         this.password = user.password;
+        this.gameCollection = user.gameCollection;
     }
 }
